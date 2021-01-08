@@ -3,14 +3,13 @@
 const imagesContainer = document.querySelector(".js-main-container");
 const loader = document.querySelector(".js-loader");
 let dataResults = [];
-let limit = 5;
+let limit = 10;
 let page = 1;
 
 //API
 function getInfoFromApi() {
-  fetch(
-    `https://jsonplaceholder.typicode.com/photos?_limit=${limit}&_page=${page}`
-  )
+  fetch(`
+  https://picsum.photos/v2/list?page=${page}&limit=${limit}`)
     .then((response) => response.json())
     .then((data) => {
       dataResults = data;
@@ -24,8 +23,8 @@ function renderImages() {
     const divEl = document.createElement("div");
     divEl.classList.add("container");
     divEl.innerHTML = `
-    <p class="container-id">${image.id}</p>
-    <img src=${image.url} class="container-image" />`;
+    <p class="container-author">${image.author}</p>
+    <img src=${image.download_url} class="container-image" />`;
 
     imagesContainer.appendChild(divEl);
   });
@@ -39,7 +38,7 @@ function showLoader() {
     setTimeout(() => {
       page += 1;
       getInfoFromApi();
-    }, 500);
+    }, 300);
   }, 1000);
 }
 
@@ -47,7 +46,7 @@ function showLoader() {
 function showScroll() {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-  if (scrollTop + clientHeight >= scrollHeight - 5) {
+  if (scrollTop + clientHeight >= scrollHeight - 10) {
     showLoader();
   }
 }
