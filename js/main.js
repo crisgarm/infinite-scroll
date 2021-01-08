@@ -3,7 +3,7 @@
 const imagesContainer = document.querySelector(".js-main-container");
 const loader = document.querySelector(".js-loader");
 let dataResults = [];
-let limit = 6;
+let limit = 5;
 let page = 1;
 
 //API
@@ -31,4 +31,26 @@ function renderImages() {
   });
 }
 
+//Show loader & fetch more images
+function showLoader() {
+  loader.classList.add("show");
+  setTimeout(() => {
+    loader.classList.remove("show");
+    setTimeout(() => {
+      page += 1;
+      getInfoFromApi();
+    }, 500);
+  }, 1000);
+}
+
+//Scroll
+function showScroll() {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    showLoader();
+  }
+}
+
+window.addEventListener("scroll", showScroll);
 getInfoFromApi();
